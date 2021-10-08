@@ -7,7 +7,7 @@
                 <input class="toggle" type="checkbox" (change)="toggleStatus(todo); todoStatus.toggleStatus(todoElem,todo.isActive)">
                 <!-- todoStatus.toggleStatus(todoElem,todo.isActive) -->
                 <label>{{todo.content}}</label>
-                <button class="destroy"></button>
+                <button class="destroy" (click)="destroyTodo(todo)"></button>
             </div>
         </li>
     </ul>

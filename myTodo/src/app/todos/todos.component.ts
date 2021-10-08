@@ -17,6 +17,11 @@ export class TodosComponent implements OnInit {
     todo.isActive = !todo.isActive;
     console.log(todo);
   }
+  destroyTodo(todo:any){
+    let todoIndex = this.todoList.findIndex(todoIndex => todoIndex.id === todo.id);
+    this.todoList.splice(todoIndex, 1);
+    console.log(this.todoList);
+  }
 
   ngOnInit(): void {
   }

@@ -17,13 +17,15 @@ export class HeaderComponent implements OnInit {
   }
 
   
-
+  private idCounter: number = 1;
   public addTodo(e: Event){
     const input = e.target as HTMLTextAreaElement;
     const todo = {
+      id: this.idCounter,
       content: input.value.trim(),
       isActive: true
     }
+    this.idCounter++;
 
     if(todo.content !== ''){ 
       this.todoList.push(todo);
