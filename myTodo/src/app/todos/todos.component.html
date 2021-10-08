@@ -1,0 +1,14 @@
+<section class="main">
+    <input id="toggle-all" class="toggle-all" type="checkbox">
+    <label for="toggle-all">Mark all as complete</label>
+    <ul class="todo-list">
+        <li *ngFor="let todo of todoList" appTodoStatus [todoIsActive]="todo.isActive" #todoStatus="todoStatus" #todoElem>
+            <div class="view">
+                <input class="toggle" type="checkbox" (change)="toggleStatus(todo); todoStatus.toggleStatus(todoElem,todo.isActive)">
+                <!-- todoStatus.toggleStatus(todoElem,todo.isActive) -->
+                <label>{{todo.content}}</label>
+                <button class="destroy"></button>
+            </div>
+        </li>
+    </ul>
+</section> 

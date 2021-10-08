@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+// import { EventEmitter } from 'stream';
 
 @Component({
   selector: 'app-header',
@@ -7,8 +8,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  @Input() todoList: any[];
+  @Output() todoAdded: EventEmitter<any> = new EventEmitter();
 
+  
+  constructor() {
+    this.todoList = [];
+  }
+
+  
+
+  public addTodo(e: Event){
+    const input = e.target as HTMLTextAreaElement;
+    const todo = {
+      content: input.value.trim(),
+      isActive: true
+    }
+
+    if(todo.content !== ''){ 
+      this.todoList.push(todo);
+      input.value = '';
+      this.todoAdded.emit();
+
+      console.log(this.todoList);
+    }
+  }
   ngOnInit(): void {
   }
 
