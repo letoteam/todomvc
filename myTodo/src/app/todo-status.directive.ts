@@ -6,6 +6,7 @@ import { Directive, Input, ElementRef} from '@angular/core';
 })
 export class TodoStatusDirective {
   @Input() todoIsActive = true;
+  @Input() todoIdEditing = false;
   constructor(el: ElementRef) {
     this.toggleStatus(el.nativeElement, this.todoIsActive)
   }
@@ -13,8 +14,5 @@ export class TodoStatusDirective {
     todoIsActive
     ? el.classList.remove('completed') 
     : el.classList.add('completed');
-  }
-  text(el: any){
-    console.log(el.classList);
   }
 }

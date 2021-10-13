@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, AfterViewInit } from '@angular/core';
 // import { EventEmitter } from 'stream';
 
 @Component({
@@ -6,7 +6,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit{
 
   @Input() todoList: any[];
   @Output() todoAdded: EventEmitter<any> = new EventEmitter();
@@ -23,7 +23,8 @@ export class HeaderComponent implements OnInit {
     const todo = {
       id: this.idCounter,
       content: input.value.trim(),
-      isActive: true
+      isActive: true, 
+      isEditing: false,
     }
     this.idCounter++;
 
@@ -37,5 +38,4 @@ export class HeaderComponent implements OnInit {
   }
   ngOnInit(): void {
   }
-
 }
