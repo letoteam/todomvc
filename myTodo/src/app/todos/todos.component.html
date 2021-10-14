@@ -1,16 +1,18 @@
+<header class="header">
+    <h1>todos</h1>
+    <input class="new-todo" placeholder="What needs to be done?" type="text" autofocus (change)="addTodo($event)">
+</header>   
 <section class="main">
     <input id="toggle-all" class="toggle-all" type="checkbox">
     <label for="toggle-all">Mark all as complete</label>
     <ul class="todo-list">
-        <li *ngFor="let todo of todoList" [class.editing]="todo.isEditing" appTodoStatus [todoIsActive]="todo.isActive" #todoStatus="todoStatus" #todoElem [id]="'todoId-' + todo.id">
+        <li *ngFor="let todo of todoListForView" [class.editing]="todo.isEditing" [class.completed]="!todo.isActive" #todoElem [id]="'todoId-' + todo.id">
             <div class="view">
-                <input class="toggle" type="checkbox" (change)="toggleStatus(todo); todoStatus.toggleStatus(todoElem,todo.isActive)">
+                <input class="toggle" type="checkbox" (change)="toggleStatus(todo);">
                 <label (dblclick)="showEditingInput(todo)">{{todo.content}}</label>
                 <button class="destroy" (click)="destroyTodo(todo)"></button>
             </div>
             <input type="text" class="edit" *ngIf="todo.isEditing" [value]="todo.content" (change)="changeTodoContent($event, todo.id)">
-
-            <!-- TODO:  focus on input by click on label-->
 
         </li>
     </ul>

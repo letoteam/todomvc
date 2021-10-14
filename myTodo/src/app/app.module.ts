@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { TodosComponent } from './todos/todos.component';
 import { FiltersComponent } from './filters/filters.component';
@@ -12,7 +11,6 @@ import { TodoStatusDirective } from './todo-status.directive';
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     FooterComponent,
     TodosComponent,
     FiltersComponent,

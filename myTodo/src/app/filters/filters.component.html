@@ -2,13 +2,13 @@
     <span class="todo-count"></span>
     <ul class="filters">
         <li>
-            <a href="#/" class="selected">All</a>
+            <a routerLink="" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}">All</a>
         </li>
         <li>
-            <a href="#/active">Active</a>
+            <a routerLink="active" routerLinkActive="selected">Active</a>
         </li>
         <li>
-            <a href="#/completed">Completed</a>
+            <a routerLink="completed" routerLinkActive="selected">Completed</a>
         </li>
     </ul>
     <button class="clear-completed">Clear completed</button>

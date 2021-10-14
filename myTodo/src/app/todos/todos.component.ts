@@ -1,9 +1,6 @@
-import { AfterViewInit, Component, Directive, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-@Directive({selector: 'todoElem'})
-class TodoElem {
-
-}
 @Component({
   selector: 'app-todos',
   templateUrl: './todos.component.html',
@@ -11,22 +8,60 @@ class TodoElem {
 })
 export class TodosComponent implements OnInit{
   
-  @Input() todoList: any[];
-
+  todoList: any[];
+  todoListForView: any[] = [];
   todoItemClassList: string;
-  constructor() { 
+  private idCounter: number = 1;
+
+  constructor(private router: Router) { 
     this.todoList = [];
+
+
+    router.events.subscribe((event: any) => {
+      switch(event.url){
+        case '/': 
+          this.todoListForView = this.todoList;
+          break;
+        case '/active':
+          this.todoListForView = this.todoList.filter(todo => todo.isActive);
+          break;
+        case '/completed':
+          this.todoListForView = this.todoList.filter(todo => !todo.isActive);
+          break;
+      }
+
+      console.log(event);
+    });
     this.todoItemClassList = '';
   }
 
-  toggleStatus(todo:any){
-    todo.isActive = !todo.isActive;
-    console.log(todo);
+  public addTodo(e: Event){
+    const input = e.target as HTMLTextAreaElement;
+    const todo = {
+      id: this.idCounter,
+      content: input.value.trim(),
+      isActive: true, 
+      isEditing: false,
+    }
+    this.idCounter++;
+
+    if(todo.content !== ''){ 
+      this.todoList.push(todo);
+      this.todoListForView = this.todoList.concat();
+      input.value = '';
+
+      console.log(this.todoList, this.todoListForView);
+    }
   }
+  todoIndex(todo: any): number{
+    return this.todoList.findIndex(todoIndex => todoIndex.id === todo.id);
+  }
+  toggleStatus = (todo:any) => todo.isActive = !todo.isActive;
+
   destroyTodo(todo:any){
-    let todoIndex = this.todoList.findIndex(todoIndex => todoIndex.id === todo.id);
+    let todoIndex = this.todoIndex(todo);
     this.todoList.splice(todoIndex, 1);
-    console.log(this.todoList);
+    this.todoListForView.splice(todoIndex, 1);
   }
   showEditingInput(todo: any){
     todo.isEditing = true;

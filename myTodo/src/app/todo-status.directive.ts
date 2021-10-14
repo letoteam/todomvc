@@ -8,11 +8,11 @@ export class TodoStatusDirective {
   @Input() todoIsActive = true;
   @Input() todoIdEditing = false;
   constructor(el: ElementRef) {
-    this.toggleStatus(el.nativeElement, this.todoIsActive)
+    // this.toggleStatus(el.nativeElement, this.todoIsActive)
   }
-  toggleStatus(el: any, todoIsActive: boolean){
-    todoIsActive
-    ? el.classList.remove('completed') 
-    : el.classList.add('completed');
-  }
+  // toggleStatus(el: any, todoIsActive: boolean){
+  //   todoIsActive
+  //   ? el.classList.remove('completed') 
+  //   : el.classList.add('completed');
+  // }
 }
