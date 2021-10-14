@@ -3,17 +3,33 @@
     <input class="new-todo" placeholder="What needs to be done?" type="text" autofocus (change)="addTodo($event)">
 </header>   
 <section class="main">
-    <input id="toggle-all" class="toggle-all" type="checkbox">
-    <label for="toggle-all">Mark all as complete</label>
-    <ul class="todo-list">
+    <input id="toggle-all" class="toggle-all" type="checkbox" (change)="toggleAllStatus()">
+    <label for="toggle-all" [class.hidden]="todoListIsEmpty">Mark all as complete</label>
+    <ul class="todo-list" [class.hidden]="todoListIsEmpty">
         <li *ngFor="let todo of todoListForView" [class.editing]="todo.isEditing" [class.completed]="!todo.isActive" #todoElem [id]="'todoId-' + todo.id">
+
             <div class="view">
-                <input class="toggle" type="checkbox" (change)="toggleStatus(todo);">
+                <input class="toggle" type="checkbox" (change)="toggleStatus(todo); checkCompleted()">
                 <label (dblclick)="showEditingInput(todo)">{{todo.content}}</label>
                 <button class="destroy" (click)="destroyTodo(todo)"></button>
             </div>
-            <input type="text" class="edit" *ngIf="todo.isEditing" [value]="todo.content" (change)="changeTodoContent($event, todo.id)">
+            <input type="text" class="edit" *ngIf="todo.isEditing" [value]="todo.content" (change)="changeTodoContent($event, todo.id);">
 
         </li>
     </ul>
 </section>
+<footer class="footer" [class.hidden]="todoListIsEmpty">
+    <span class="todo-count"></span>
+    <ul class="filters">
+        <li>
+            <a routerLink="" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}">All</a>
+        </li>
+        <li>
+            <a routerLink="active" routerLinkActive="selected">Active</a>
+        </li>
+        <li>
+            <a routerLink="completed" routerLinkActive="selected">Completed</a>
+        </li>
+    </ul>
+    <button class="clear-completed" [class.hidden]="!haveCompleted" (click)="clearCompleted()">Clear completed</button>
+</footer>

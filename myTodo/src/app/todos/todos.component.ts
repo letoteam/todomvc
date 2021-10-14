@@ -8,14 +8,18 @@ import { Router } from '@angular/router';
 })
 export class TodosComponent implements OnInit{
   
-  todoList: any[];
+  todoList: any[] = [];
   todoListForView: any[] = [];
-  todoItemClassList: string;
+  todoListIsEmpty: boolean;
+  haveCompleted: boolean;
+  mustBeDone: boolean;
   private idCounter: number = 1;
 
   constructor(private router: Router) { 
-    this.todoList = [];
-
+    this.todoList.length === 0 ? this.todoListIsEmpty = true : this.todoListIsEmpty = false;
+    console.log(this.todoListIsEmpty);
+    this.haveCompleted = false;
+    this.mustBeDone = true;
 
     router.events.subscribe((event: any) => {
       switch(event.url){
@@ -29,10 +33,7 @@ export class TodosComponent implements OnInit{
           this.todoListForView = this.todoList.filter(todo => !todo.isActive);
           break;
       }
-
-      console.log(event);
     });
-    this.todoItemClassList = '';
   }
 
   public addTodo(e: Event){
@@ -50,23 +51,51 @@ export class TodosComponent implements OnInit{
       this.todoListForView = this.todoList.concat();
       input.value = '';
 
-      console.log(this.todoList, this.todoListForView);
+      this.todoListIsEmpty = false;
+      console.log(this.todoListIsEmpty);
     }
   }
+
+  checkCompleted(){
+    this.todoList.find(todo => todo.isActive ? this.haveCompleted = false : this.haveCompleted = true);
+  }
+
   todoIndex(todo: any): number{
     return this.todoList.findIndex(todoIndex => todoIndex.id === todo.id);
   }
-  toggleStatus = (todo:any) => todo.isActive = !todo.isActive;
 
+  checkIsTodoEmpty(){
+    if(this.todoList.length === 0) {
+      this.todoListIsEmpty = true;
+    }else{
+      this.todoListIsEmpty = false;
+    }
+  }
+
+  toggleStatus = (todo:any) => todo.isActive = !todo.isActive;
+  toggleAllStatus(){
+    if(this.mustBeDone){
+      this.todoList.forEach(todo => {
+        todo.isActive = false;
+        this.mustBeDone = false;
+      });
+    }
+    else{
+      this.todoList.forEach(todo => {
+        todo.isActive = true;
+        this.mustBeDone = true;
+      });
+    }
+  }
   destroyTodo(todo:any){
     let todoIndex = this.todoIndex(todo);
     this.todoList.splice(todoIndex, 1);
     this.todoListForView.splice(todoIndex, 1);
+    this.checkCompleted();
+    this.checkIsTodoEmpty();
   }
   showEditingInput(todo: any){
     todo.isEditing = true;
-    // console.log(this.viewTodo.find());
-    this.todoItemClassList =  'editing';
   }
   changeTodoContent(ev: Event, todoId: number){
     let todo = this.todoList.find(todo => todo.id === todoId);
@@ -74,10 +103,20 @@ export class TodosComponent implements OnInit{
     if(inputValue.trim() != ''){
       todo.content = inputValue;
       todo.isEditing = false;
+      this.checkCompleted();
     }else{
       this.destroyTodo(todo);
     }
   
+  }
+  clearCompleted(){
+    let completedTasks = this.todoList.filter(todo => !todo.isActive);
+    completedTasks.forEach(todo => {
+      this.destroyTodo(todo);
+      this.haveCompleted = false;
+      this.checkIsTodoEmpty();
+    });
+    // this.checkCompleted();
   }
 
   ngOnInit(): void {
